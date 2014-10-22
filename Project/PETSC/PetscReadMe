@@ -1,0 +1,41 @@
+
+MatSetFromOptions, set basic matrix properties from command line
+
+MatGetOwnershipRange, get the rows of the matrix that PETSc assigned to this process
+
+KSPCreate
+
+KSPSetFromOptions
+
+KSPSolve
+
+KSPDestroy
+
+KSPGetIterationNumber
+
+each KSP object contains two objects: Krylov space method(teh iterative method and the KSP context(information on the method parameters); PC
+
+so a vector can be distributed across process, PETSc's default is a  1D decomposition; for multi-data decompositions, PETSc provides Distributed Array (DAs) 
+
+in DA, the vector elements numbered continuous in a process
+
+DACreate2d(PETSC_COMM_WORLD,DA_NONPERIODIC, DA_STENCIL_STAR, nx, ny, px, py, 1, 1, 0, 0, &grid) --> 
+create a global nx * ny grid, with a px * py process decomposition
+
+DACreateGlobalObject  create a PETSc Object(vector, matrix)
+ 
+DAVecGetArray -> get a multidimensional array that gives the illusion of a global array ?
+
+DAVecRestoreArray -> to free storage allocated by DAVecGetArray
+
+DAGetCorners -> return the indices of the lower-left corner of the local part of the distributed array relative to the global coordinates, along with the number of points in each direction
+
+DAGetMatrix -> returns a matrix whose elements can be accessed with the coordinates of the distributed array. 
+
+DACreateLocalVector -> create PETSc vector that can hold the local representation of DA(the local mesh plus ghost points)
+
+DAGlobalToLocalBegin/end  -> update ghostpoints, with MPI communication with neighboring process
+
+DALocalToGlobal -> transfers values in local to global, the ghost points are discarded
+
+ 
