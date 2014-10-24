@@ -1,7 +1,6 @@
 #include<iostream>  
 #include<iomanip>
 #include<cmath> 
-#include<time.h>
 #include<omp.h>  
 
 using namespace std;
@@ -14,12 +13,14 @@ using namespace std;
 	{	
 		int i;
 		double sum = 0;		
-		clock_t t1=clock();
+		//clock_t t1=clock();
+		double t1=omp_get_wtime();
 		#pragma omp parallel for private(i) reduction(+:sum) 
 		for(i=0; i<N; i++){
 		sum +=  pow(minus_one, i)/(2*i + 1);
 		}	
-		clock_t t2=clock();
+		//clock_t t2=clock();
+		double t2=omp_get_wtime();
 		double cost = (double) (t2 -t1)/1e6;
 		cout << "when N = " << N << ", Pi = "<<  setprecision(10) << 4*sum << " Running Time = " << cost <<endl;
 	}
