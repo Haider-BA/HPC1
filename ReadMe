@@ -1,0 +1,8 @@
+Nov 11
+
+It's an assginment to implement Jacobian Iteration. I try to make it a pratical one, with MatAssembly, VectorrAssembly, and the Jacobian Solver(maybe later, other KSP solvers are easy to implement in) directly works on the Matrix and Vectors
+
+
+So this is a little like a Petsc example. Starting here, it will lead to other issues, sparse matrix storage, sparse matrix ordering and take out the elements from the sparse storage memory. In one word, solving sparse linear system is not a simple work, the solver is only first step.
+
+Later as study going on, I would like to implemment the sparse matrix storage and read IO issues, and later consider implement some modern solvers(mg) 
