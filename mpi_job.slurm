@@ -7,7 +7,7 @@
 #SBATCH --mem=48000
 #SBATCH --job-name="mpi_pi"
 #SBATCH --output=mpi_pi.out
-#SBATCH --mail-user=zhengjia@buffalo.edu
+#SBATCH --mail-user=zhengxx@buffalo.edu
 #SBATCH --mail-type=ALL
 #SBATCH --requeue
 
