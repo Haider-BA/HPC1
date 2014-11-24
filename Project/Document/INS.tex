@@ -1,0 +1,85 @@
+%========================================================================
+\documentclass[11pt]{article}
+\usepackage{graphics}
+\graphicspath{{figs/}}
+
+%===========================================
+% Fix the margins
+\setlength{\topmargin}{-0.4in}    % distance from top of page to begining of text
+\setlength{\textheight}{9.0in}    % height of main text
+\setlength{\textwidth}{6.5in}     % width of text
+\setlength{\oddsidemargin}{0.in}  % odd page left margin
+\setlength{\evensidemargin}{0.in} % even page left margin
+
+%===========================================
+\usepackage{amssymb,amsfonts}
+\usepackage{amsmath}
+
+%===========================================
+\begin{document}
+
+\title{incompressible Navier Stokes equation using fractional step method}
+
+\author{Zhengjiang Li}
+
+\date{}
+
+\maketitle
+
+\section {Incompressible Navier-Stokes equation}
+
+	$$ \frac{\partial u}{\partial t} + ( u \cdot \nabla) u = - \nabla p + \frac{1}{Re} \nabla^2 u $$
+
+	$$ \nabla \cdot u = 0 $$
+
+
+discretization with a staggered mesh finite volume formulation or with lumped finite element formulation, using implicit Crank-Nicolson(CN) integration for the viscous terms and the explicit second-order Adams-Bashforth(AB2) scheme for the convective terms, namely:
+
+\begin{align*}
+  \frac{v^{n+1} - v^n}{\Delta t} + [\frac{3}{2} H(v^n) - \frac{1}{2} H(v^{n-1}] \\
+ = -G p^{n+1} + \frac{1}{2Re} L(v^{n+1} + v^n) + bc' 
+\end{align*}
+
+$$ D v^{n+1} = 0 + bc'' $$
+
+in algebraic system :
+$$ 
+\begin{bmatrix} A && G \\ D && 0 \end{bmatrix} \begin{pmatrix} v^{n+1} \\ p^{n+1} \end{pmatrix} = \left( \begin{array}{c} r \\ 0 \end{array} \right) + \left ( \begin{array}{c} bc' \\ bc'' \end{array} \right) $$
+
+where
+
+$$ A = \frac{1}{\Delta t} [ I - \frac{\Delta t}{2Re}L] $$
+
+$$ r = \frac{1}{\Delta t} [ I + \frac{\Delta t}{2Re} L] v^n - [\frac{3}{2} H(v^n) - \frac{1}{2} H(v^{n-1}] $$
+
+For a algebraic system of equation above, usually we can approximate the divergence equation(the second block equation), or we can approximate the momentum equation by approximation the pressure term, as 
+
+ $$ 
+\begin{bmatrix} A &&  (AB)G \\ D &&  0 \end{bmatrix} \begin{pmatrix} v^{n+1} \\ p^{n+1} \end{pmatrix} = \left( \begin{array}{c} r \\ 0 \end{array} \right) + \left ( \begin{array}{c} bc' \\ bc'' \end{array} \right) $$
+
+	
+Take block LU decomposition will obtain:
+
+$$ 
+\begin{bmatrix} A && 0 \\ D && -DBG \end{bmatrix} \begin{pmatrix} v^* \\ p^{n+1} \end{pmatrix} = \left( \begin{array}{c} r \\ 0 \end{array} \right) + \left ( \begin{array}{c} bc' \\ bc'' \end{array} \right) $$
+
+$$ 
+\begin{bmatrix} I &&  BG \\ 0 && I \end{bmatrix} \begin{pmatrix} v^{n+1} \\ p^{n+1} \end{pmatrix} = \left( \begin{array}{c} v^* \\ p^{n+1} \end{array} \right) $$
+
+or in the following sequence :
+
+\begin{equation}
+	A v^* = r + bc';
+	DBG p^{n+1} = D v^* - bc'' ;
+  	v^{n+1} = v* - BG p^{n+1};
+\end{equation}
+
+if B is chosen equal to $\Delta t$ times the identity matrix, then it give the first-order block LU decomposition;
+if B is cosen to be an approximate inverse of A, then higher order accuray can be achieved.
+
+
+\section {Reference}
+1 An analysis of the fractional step method, J. B. Perot 1993
+2 Analysis of an exact fractional step method, W. Chang 2002
+
+\end{document}
