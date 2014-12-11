@@ -5,4 +5,6 @@ This is a projection method to solve incompressbile Navier-Stokes equation using
 Dec 10
 How to design fluidsimulation struct
 
-In this folder (INS2), using strcut variable direcetly
+Define the fluidsimualtion struct in NavierStokesSolver class
+
+Right now, it sounds running right with only one process, with multi-proc has Errors
