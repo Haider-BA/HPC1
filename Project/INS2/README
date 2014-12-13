@@ -8,3 +8,14 @@ How to design fluidsimulation struct
 Define the fluidsimualtion struct in NavierStokesSolver class
 
 Right now, it sounds running right with only one process, with multi-proc has Errors
+
+Dec 13 in the morning
+
+few bugges in code has updated, and there maybe more waiting for later. one more curious problem is the code didn't work right with multi-procs
+
+[0]PETSC ERROR: KSPGetIterationNumber() line 66 in /util/petsc/petsc-lite-3.4.4/src/ksp/ksp/interface/iterativ.c
+[0]PETSC ERROR: --------------------- Error Message ------------------------------------
+[0]PETSC ERROR: Null argument, when expecting valid pointer!
+[0]PETSC ERROR: Null Object: Parameter # 1!
+
+
