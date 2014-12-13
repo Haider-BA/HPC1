@@ -18,23 +18,17 @@ parser.add_argument("-xmax", type=float, dest="xmax", help="upper x-limit of the
 parser.add_argument("-ymin", type=float, dest="ymin", help="lower y-limit of the plotting region", default=float("-inf"))
 parser.add_argument("-ymax", type=float, dest="ymax", help="upper y-limit of the plotting region", default=float("inf"))
 parser.add_argument("-stride", type=int, dest="stride", help="output only the nodes separated by a certain interval", default=1)
-parser.add_argument("-startStep", type=int, dest="startStep", help="start step", default=0)
-parser.add_argument("-nsave", type=int, dest="nsave", help="nsave", default=5)
-parser.add_argument("-nt", type=int, dest="nt", help="nsave", default=5)
+#parser.add_argument("-startStep", type=int, dest="startStep", help="start step", default=0)
+#parser.add_argument("-nsave", type=int, dest="nsave", help="nsave", default=5)
+#parser.add_argument("-nt", type=int, dest="nt", help="nsave", default=5)
 CLargs = parser.parse_args()
 
 folder = CLargs.folder
 stride = CLargs.stride
 
-#startStep = CLargs.startStep
-#nt = CLargs.nt
-#nsave = CLargs.nsave
-		
 print "Case folder: " + folder
 	
 	# if the command line arguments are missing, set the values from the file
-#nsave = CLargs.nsave if CLargs.nsave > -1 else args.nsave
-#nt = CLargs.nt if CLargs.nt > -1 else args.nt
 
 infoFile = folder + "/simulationInfo.txt"
 f = open(infoFile,"r")
@@ -45,15 +39,15 @@ f.close()
 fileParser = argparse.ArgumentParser()
 fileParser.add_argument("-nx", type=int, dest="nx", default=10)
 fileParser.add_argument("-ny", type=int, dest="ny", default=10)
-fileParser.add_argument("-startStep", type=int, dest="startStep", default=-1)
+#fileParser.add_argument("-startStep", type=int, dest="startStep", default=-1)
 fileParser.add_argument("-nt", type=int, dest="nt", default=5)
 fileParser.add_argument("-nsave",type=int,dest="nsave",default=5)
 fileParser.add_argument("-dt",type=float,dest="dt",default=0.05)
 args = fileParser.parse_args(args_list)
 
-startStep = CLargs.startStep if CLargs.startStep > -1 else args.startStep
-nsave = CLargs.nsave if CLargs.nsave > -1 else args.nsave
-nt = CLargs.nt if CLargs.nt > -1 else args.nt
+#startStep = CLargs.startStep if CLargs.startStep > -1 else args.startStep
+nsave = args.nsave
+nt =  args.nt
 
 	# number of cells in the mesh in each direction
 nx = args.nx
@@ -119,21 +113,23 @@ print startx, endx
 print starty, endy
 print stride
 	
-mkdir(folder+"/output")
-	
-for n in xrange(startStep+nsave, nt+nsave, nsave):
+#mkdir(folder+"/output")
+
+print "nsave %d, nt %d"	%(nsave, nt)
+
+for n in xrange(nsave, nt, nsave):
 		# read the fluxes from file and reshape them accordingly
-	petscObjs = PetscBinaryIO.PetscBinaryIO().readBinaryFile('%s/%06dqx.dat' % (folder,n))[0]
+	petscObjs = PetscBinaryIO.PetscBinaryIO().readBinaryFile('%s/%07d/qx.dat' % (folder,n))[0]
 	qx = petscObjs.reshape((Uny, Unx))
 		
-	petscObjs = PetscBinaryIO.PetscBinaryIO().readBinaryFile('%s/%06dqy.dat' % (folder,n))[0]
+	petscObjs = PetscBinaryIO.PetscBinaryIO().readBinaryFile('%s/%07d/qy.dat' % (folder,n))[0]
 	qy = petscObjs.reshape((Vny, Vnx))
 
 	xsize = len(xrange(startx+1, endx+1, stride))
 	ysize = len(xrange(starty+1, endy+1, stride))
 
 		# write the VTK file
-	outFile = '%s/output/velocity%06d.vtk' % (folder,n)
+	outFile = '%s/output/velocity%07d.vtk' % (folder,n)
 	g = open(outFile, 'w')	
 	g.write('# vtk DataFile Version 3.0\n')
 	g.write('Header\n')

@@ -24,7 +24,6 @@ PetscErrorCode NavierStokesSolver :: generateDiagonalMatrices()
 	{
 		for(i=mstart; i <mstart+m; i++)
 		{
-//			MHatx[j][i] = (i<fluid.nx-1)?0.5*(mesh->dx[i] + mesh->dx[i+1]):0.5*(mesh->dx[i] + mesh->dx[0]);
 			MHatx[j][i] = fluid.dx; 
 			RInvx[j][i] = 1.0/fluid.dy;
 			BNx[j][i] = fluid.dt/(MHatx[j][i]*RInvx[j][i]);
@@ -44,7 +43,6 @@ PetscErrorCode NavierStokesSolver :: generateDiagonalMatrices()
 	{
 		for(i=mstart; i<mstart+m; i++)
 		{
-//			MHaty[j][i] = (j<mesh->ny-1) ? 0.5*(mesh->dy[j] + mesh->dy[j+1]):0.5*(mesh->dy[j]+mesh->dy[0]);
 			MHaty[j][i] = fluid.dy;
 			RInvy[j][i] = 1.0/fluid.dx;
 			BNy[j][i] = fluid.dt/(MHaty[j][i]*RInvy[j][i]);

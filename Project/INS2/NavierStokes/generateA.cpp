@@ -93,55 +93,10 @@ PetscErrorCode NavierStokesSolver::generateA()
 			getCoefficients(dxU[i], dxU[i+1], dyU[j], dyU[j+1], values);
 			getColumns(uGlobalIdx, i, j, cols);
 	
-		/* n, the number of rows along y direction(in this case n=9)
- 		   m, the number of cols along x direction(in this case m=10)
-		   index i for the No. of rows
-		   index j  for the No. of cols
+		/*   index i for the No. of rows
+		     index j  for the No. of cols
 		*/ 
-			if(i==0 || i== fluid.nx-1 || j== 0 || j== fluid.ny) 
-			{
-				ierr = MatSetValues(A, 1, &cols[0], 1, &cols[0], &values[0], INSERT_VALUES);
-				if(i==0) 
-				{
-					 ierr = MatSetValues(A,1,&cols[0],1,&cols[4],&values[4],INSERT_VALUES);
-					 if(j>0 && j < fluid.nx-1) 
-					 {
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[1],&values[1],INSERT_VALUES);
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[2],&values[2],INSERT_VALUES);
-					 }
-				}
-				if(i==fluid.nx-1)
-				{
-					 ierr = MatSetValues(A,1,&cols[0],1,&cols[3], &values[3],INSERT_VALUES);
-					 if(j>0 && j< fluid.ny)
-					 {
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[1],&values[1],INSERT_VALUES);
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[2],&values[2],INSERT_VALUES);
-					 }
-				}	
-				if(j==0)
-				{
-					 ierr = MatSetValues(A,1,&cols[0],1,&cols[2],&values[2],INSERT_VALUES);
-					 if(i>0 && i< fluid.nx-1)
-					 {
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[3],&values[3],INSERT_VALUES);
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[4],&values[4],INSERT_VALUES);
-					 }
-				}
-				if(j==fluid.ny)
-				{
-					 ierr = MatSetValues(A, 1, &cols[0], 1, &cols[1], &values[1],INSERT_VALUES);
-					 if(i>0 && i< fluid.nx-1)
-					 {
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[3],&values[3],INSERT_VALUES);
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[4],&values[4],INSERT_VALUES);
-					 }
-				}
-				
-			} else
-			{
-				ierr = MatSetValues(A, 1, &cols[0], 5, cols, values, INSERT_VALUES); CHKERRQ(ierr);	
-			}
+			ierr = MatSetValues(A, 1, &cols[0], 5, cols, values, INSERT_VALUES); CHKERRQ(ierr);	
 		}
 	}
 	ierr = DMDAVecRestoreArray(uda, uMapping, &uGlobalIdx); CHKERRQ(ierr);
@@ -154,51 +109,7 @@ PetscErrorCode NavierStokesSolver::generateA()
 		{
 			getCoefficients(dxV[i], dxV[i+1], dyV[j], dyV[j+1], values);
 			getColumns(vGlobalIdx, i, j, cols);
-
-			if(i==0 || i==fluid.nx || j==0 || j==fluid.ny-1) 
-			{
-				ierr = MatSetValues(A, 1, &cols[0], 1, &cols[0], &values[0], INSERT_VALUES);
-				if(i==0) 
-				{
-					 ierr = MatSetValues(A,1,&cols[0],1,&cols[4],&values[4],INSERT_VALUES);
-					 if(j>0 && j < fluid.ny-1) 
-					 {
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[1],&values[1],INSERT_VALUES);
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[2],&values[2],INSERT_VALUES);
-					 }
-				}
-				if(i==fluid.nx)
-				{
-					 ierr = MatSetValues(A,1,&cols[0],1,&cols[3], &values[3],INSERT_VALUES);
-					 if(j>0 && j< fluid.ny-1)
-					 {
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[1],&values[1],INSERT_VALUES);
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[2],&values[2],INSERT_VALUES);
-					 }
-				}	
-				if(j==0)
-				{
-					 ierr = MatSetValues(A,1,&cols[0],1,&cols[2],&values[2],INSERT_VALUES);
-					 if(i>0 && i< fluid.nx)
-					 {
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[3],&values[3],INSERT_VALUES);
-						ierr = MatSetValues(A,1,&cols[0],1, &cols[4],&values[4],INSERT_VALUES);
-					 }
-				}
-				if(j==fluid.ny-1)
-				{
-					 ierr = MatSetValues(A, 1, &cols[0], 1, &cols[1], &values[1],INSERT_VALUES);
-					 if(i>0 && i< fluid.nx)
-					 {
-						ierr = MatSetValues(A,1,&cols[0],1,&cols[3],&values[3],INSERT_VALUES);
-						ierr = MatSetValues(A,1,&cols[0],1, &cols[4],&values[4],INSERT_VALUES);
-					 }
-				}
-				
-			}else
-			{
 			ierr = MatSetValues(A, 1, &cols[0], 5, cols, values, INSERT_VALUES); CHKERRQ(ierr);
-			}
 		}
 	}
 	ierr = DMDAVecRestoreArray(vda, vMapping, &vGlobalIdx); CHKERRQ(ierr);

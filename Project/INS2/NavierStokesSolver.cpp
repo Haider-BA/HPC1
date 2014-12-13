@@ -219,6 +219,7 @@ void NavierStokesSolver::countNumNonZeros(PetscInt *cols,size_t numCols, PetscIn
 #include "NavierStokes/setNullSpace.cpp"
 #include "NavierStokes/updateBoundaryGhosts.cpp"
 #include "NavierStokes/writeData.cpp"
+#include "NavierStokes/writeGrid.cpp"
 #include "NavierStokes/createKSPs.cpp"
 #include "NavierStokes/generateBC1.cpp"
 #include "NavierStokes/generateBC2.cpp"

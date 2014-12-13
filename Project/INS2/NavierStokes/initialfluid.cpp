@@ -8,8 +8,15 @@ void  NavierStokesSolver::initialfluid()
 
 	if(rank==0) //read input file only on process 0
 	{
+	/* case parameters for ibm 
 		fluidsimulation temp = {0.025, {1.0, 0.0}, {{1.0, 1.0, 1.0, 1.0}, {0.0, 0.0,0.0,0.0}}, 
-						0.01, 5, 5, 10, 10, 0.05, 0.05};
+						0.01, 2, 2, 4, 4, 0.05, 0.05};
+	*/
+
+	/* cavity fluid simulation parameters */
+		fluidsimulation temp = { 0.01, {0.0, 0.0}, {{0.0,0.0,0.0,1.0}, {0.0,0.0,0.0,0.0}},
+					 0.01, 5000, 200, 100, 100, 0.02, 0.02};	
+
 		fluid = temp; 		
 	}
 		MPI_Barrier(PETSC_COMM_WORLD);

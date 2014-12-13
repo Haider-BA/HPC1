@@ -22,10 +22,17 @@ PetscErrorCode NavierStokesSolver::updateBoundaryGhosts()
 
 		//right-edge(outlet)
 		if(mstart+m == M) // M global indices range in x direction
-		{ //convective approximation
+		{ 
+		/* for ibm case
+			//convective approximation
 			PetscReal beta = fluid.bc[0][3] * dt / dxU[M];
 			qx[j][M] = (1-beta)*qx[j][M] + beta*qx[j][M-1];
+		*/
+		/* for cavity flow */
+			//dirichlet b.c.
+			qx[j][M] = fluid.bc[0][3]*fluid.dy;
 		}	
+	/* note here, qx[j][M-1] is updated in each timestep */
 	}
 	
 	for(i=mstart; i<mstart+m; i++)
@@ -35,7 +42,9 @@ PetscErrorCode NavierStokesSolver::updateBoundaryGhosts()
 		{ //dirichlet b.c.
 			qx[-1][i] = fluid.bc[0][1] * fluid.dx; //take care 
 		}
-
+// in PetIBM, didn't multi fluid.dx ? why or I think it should 
+// 			qx[-1][i] = fluid.bc[0][1] * dyU[0];
+// 			qx[N][i] = fluid.bc[0][2] * dyU[N];
 		//top wall
 		if(nstart+n ==N)
 		{ //dirichlet b.c.
@@ -56,6 +65,7 @@ PetscErrorCode NavierStokesSolver::updateBoundaryGhosts()
 		if(mstart==0) //global indices
 		{		//dirichlet b.c.
 			qy[j][-1] = fluid.bc[1][0] * fluid.dy;
+/*  fluid.dy  here doesn't make sense, maybe  dxV[0] */	
 		}
 
 		//right-edge(outlet)
@@ -63,6 +73,7 @@ PetscErrorCode NavierStokesSolver::updateBoundaryGhosts()
 		{ //convective approximation
 			PetscReal beta = fluid.bc[1][3] * dt / dxV[M];
 			qy[j][M] = (1-beta)*qy[j][M] + beta*qy[j][M-1] ;
+/* samilar, qy[j][M-1] is updaed in each timestep */
 		}	
 	}
 	

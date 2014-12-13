@@ -15,6 +15,7 @@ PetscErrorCode	NavierStokesSolver::generateBC2()
 	ierr = DMDAVecGetArray(vda, qyLocal, &qy); CHKERRQ(ierr);
 
 	ierr = DMDAVecGetArray(pda, bc22Global, &bc22); CHKERRQ(ierr);
+/* as we can see here, size of bc22Global is same to pda */
 	ierr = DMDAGetCorners(pda, &mstart, &nstart, NULL, &m, &n, NULL); CHKERRQ(ierr);
 
 	//x-faces
@@ -24,6 +25,7 @@ PetscErrorCode	NavierStokesSolver::generateBC2()
 		if(mstart ==0)	bc22[j][0] -= qx[j][-1];
 		//+X
 		if(mstart+m-1 == fluid.nx-1) bc22[j][fluid.nx-1] += qx[j][fluid.nx-1];
+/* bc22 is global, while qx is local */  
 	}
 
 	//y-faces
@@ -43,3 +45,8 @@ PetscErrorCode	NavierStokesSolver::generateBC2()
 
 	return 0;
 }
+
+
+/* bc2 are all known, as the x-direction, u has bc. on i=-1 and i=m
+ * as the y-dircetion, v has bc. on j=-1 and j=n
+ */

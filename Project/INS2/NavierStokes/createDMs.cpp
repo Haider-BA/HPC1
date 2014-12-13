@@ -42,7 +42,8 @@ PetscErrorCode NavierStokesSolver::createDMs()
 	// for u, number of nodes in last proc is (numX/m-1) 
 	lxu[m-1]--;
 	numX = fluid.nx - 1;
-		
+	
+	// size (lxu * lyu) on each proc only includes  interior domain	
 	ierr = DMDACreate2d(PETSC_COMM_WORLD, DMDA_BOUNDARY_GHOSTED, DMDA_BOUNDARY_GHOSTED, DMDA_STENCIL_BOX, numX, numY, m, n, 1, 1, lxu, lyu, &uda); CHKERRQ(ierr);
 	ierr = DMCompositeAddDM(qPack, uda); CHKERRQ(ierr);
 
@@ -59,6 +60,7 @@ PetscErrorCode NavierStokesSolver::createDMs()
 	lyv[n-1]--;
 	numY = fluid.ny - 1;
 
+	//size (lxv * lyv)  is on each proc, and (numX * numY) is the whole domain(only interior)
 	ierr = DMDACreate2d(PETSC_COMM_WORLD, DMDA_BOUNDARY_GHOSTED, DMDA_BOUNDARY_GHOSTED, DMDA_STENCIL_BOX, numX, numY, m, n, 1, 1, lxv, lyv, &vda); CHKERRQ(ierr);
 	ierr = DMCompositeAddDM(qPack, vda); CHKERRQ(ierr);
 

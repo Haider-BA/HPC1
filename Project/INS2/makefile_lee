@@ -1,0 +1,12 @@
+ALL:ins
+
+include ${PETSC_DIR}/conf/variables
+include ${PETSC_DIR}/conf/rules
+
+src=main.cpp NavierStokesSolver.cpp fluidsimulation.cpp
+obj=main.o NavierStokesSolver.o fluidsimulation.o
+
+ins:${obj}
+	g++ -g -o $@ $^ ${PETSC_LIB}
+	${RM} *.o
+

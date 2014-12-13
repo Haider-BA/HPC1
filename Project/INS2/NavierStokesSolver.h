@@ -3,7 +3,6 @@
 
 #include <petscdmda.h>
 #include <petscksp.h>
-#include <fstream>
 #include <vector>
 
 
@@ -129,7 +128,7 @@ public:
 	PetscErrorCode finalize(); 
 	PetscErrorCode stepTime(); //move simulation forward on timestep
 	PetscErrorCode writeData();
-//	PetscErrorCode writeGrid();
+	PetscErrorCode writeGrid();
 	PetscBool savePoint(); 
 	PetscBool finished();
 

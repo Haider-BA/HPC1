@@ -7,7 +7,7 @@ include ${PETSC_DIR}/conf/variables
 include ${PETSC_DIR}/conf/rules
 
 PETSC_CC_INCLUDES += -I.
-PCC_FLAGS += -std=c++11 -Wall -Wextra -pedantic
+PCC_FLAGS += -std=c++0x -Wall -Wextra -pedantic
 
 NS2d.o: main.cpp NavierStokesSolver.cpp fluidsimulation.cpp
 	${PCC} -g -c ${PCC_FLAGS} ${CFLAGS} ${CCPPFLAGS} $^

@@ -25,12 +25,13 @@ PetscErrorCode NavierStokesSolver::generateBC1()
 
 	for(j=nstart; j<nstart+n; j++)
 	{
-		//-X left edge, dirichlet b.c.
+		//-X most nearby left edge, dirichlet b.c.
 		if(mstart ==0) 	 bc1x[j][0] += coeffMinus*qx[j][-1]/fluid.dy; 
 		
-		//+X right edge,convective b.c.
+		//+X right edge, convective b.c. for ibm, dirichlet for cavity flow
 		if(mstart+m-1 == M -1)
-		{
+		{    
+			bc1x[j][M-1] += coeffPlus*qx[j][M]/fluid.dy;
 		}
 	}
 

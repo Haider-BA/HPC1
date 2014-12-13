@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 	ierr = PetscInitialize(&argc, &argv, (char*)0, NULL);
 	NavierStokesSolver* solver = new NavierStokesSolver(); 
 	ierr = solver->initialize();
-//	solver->writeGrid();
+	solver->writeGrid();
 	
 	while(!solver->finished())
 	{

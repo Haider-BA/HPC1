@@ -27,7 +27,7 @@ PetscErrorCode	NavierStokesSolver::calculateExplicitTerms()
 	PetscReal	nu = fluid.nu;
 	PetscReal	alphaExplicit = 0.5,
 			gamma = 1.5,
-			zeta = 0.5;
+			zeta = -0.5;
 	PetscReal	dt= fluid.dt;
 
 	//copy fluxes to local vectors
@@ -55,7 +55,6 @@ PetscErrorCode	NavierStokesSolver::calculateExplicitTerms()
 			uEast = 0.5*(u+qx[j][i+1]/fluid.dy);
 
 			//first check if the node is adjacent to -Y / +Y
-			//then check if B.C. in y-direction is periodic)
 			uSouth = (j>0) ? 0.5*(u+qx[j-1][i]/fluid.dy):qx[j-1][i]/fluid.dx;
 			uNorth = (j<N-1)?0.5*(u+qx[j+1][i]/fluid.dy):qx[j+1][i]/fluid.dx;
 
@@ -71,7 +70,7 @@ PetscErrorCode	NavierStokesSolver::calculateExplicitTerms()
 			uWest = qx[j][i-1]/fluid.dy;
 			uEast = qx[j][i+1]/fluid.dy;
 			uSouth = (j>0) ? qx[j-1][i]/fluid.dy: qx[j-1][i];
-			vNorth = (j<N-1)?qx[j+1][i]/fluid.dy: qx[j+1][i];
+			uNorth = (j<N-1)?qx[j+1][i]/fluid.dy: qx[j+1][i];
 
 			//Dx = d^2(u)/dx^2 + d^2(u)/dy^2
 			diffusionTerm = alphaExplicit*nu*(du2dx2(uWest,u,uEast, dxU[i], dxU[i+1]) + du2dx2(uSouth, u, uNorth, dyU[j], dyU[j+1]));
